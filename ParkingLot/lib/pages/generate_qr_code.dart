@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -12,13 +10,14 @@ class GeneraterQRCode extends StatefulWidget {
 }
 
 class _GeneraterQRCodeState extends State<GeneraterQRCode> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
-    var _stream =
-        FirebaseFirestore.instance.collection('Users').doc().snapshots();
-    String email = 'User email';
+    String? email = 'User email';
+    var currenUser = FirebaseAuth.instance.currentUser;
+    if (currenUser != null) {
+      email = currenUser.email;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Qr Code'),
@@ -28,6 +27,7 @@ class _GeneraterQRCodeState extends State<GeneraterQRCode> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(email!),
               QrImage(
                 data: email,
                 size: 200,

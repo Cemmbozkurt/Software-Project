@@ -1,7 +1,9 @@
 import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:parkinglot/services/reservation.dart';
 
 class ScanQRCode extends StatefulWidget {
   ScanQRCode({Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class ScanQRCode extends StatefulWidget {
 }
 
 class _ScanQRCodeState extends State<ScanQRCode> {
-  String qrResult = 'Scanned data will appear here';
+  String qrResult = "will return scanned qr";
 
   Future<void> scanQR() async {
     String barcodeScanRes; //Scanned return string.
@@ -28,24 +30,25 @@ class _ScanQRCodeState extends State<ScanQRCode> {
     setState(() {
       qrResult = barcodeScanRes.toString();
     });
+    finalizeReservation(qrResult);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Scanner'),
+        title: const Text('QR Code Scanner'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             ElevatedButton(
                 onPressed: scanQR,
-                child: Text(
+                child: const Text(
                   'Scan Code',
                 ))
           ],
